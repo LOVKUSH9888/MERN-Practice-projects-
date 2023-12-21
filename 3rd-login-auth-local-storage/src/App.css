@@ -1,6 +1,6 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 
-body {
+/* body {
   background: rgb(14, 81, 245);
   background: linear-gradient(
     90deg,
@@ -8,4 +8,4 @@ body {
     rgba(255, 255, 255, 1) 0%,
     rgba(105, 0, 255, 1) 41%
   );
-}
+} */
