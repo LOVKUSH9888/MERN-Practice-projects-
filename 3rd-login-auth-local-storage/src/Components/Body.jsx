@@ -9,34 +9,54 @@ const Body = () => {
 
   // emailHandler
   const emailHandler = (e) => {
-    // console.log(e.target.value);
     setEmail(e.target.value);
   };
 
   // passwordHandler
   const passwordHandler = (e) => {
-    // console.log(e.target.value);
     setPassword(e.target.value);
   };
 
   // formSubmitHandler
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    // Add your form submission logic here
+
+    // Check if email and password are not empty
+    if (!email || !password) {
+      alert("Please enter both email and password");
+      return;
+    }
+
+    // Retrieve existing users from local storage
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+    // Add a new user to the array
     const newUser = {
       email: email,
-      password: password
-    }
-    // Now to storing it in the local storage
-    localStorage.setItem("users", JSON.stringify(newUser));
+      password: password,
+    };
+
+    // Update users array with the new user 
+    ///we can use push or unshift here but i prefer of using spread operator
+    const updatedUsers = [...users, newUser];
+
+    // Store the updated users array in local storage
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+    alert("Registered Successfully")
+    // Clear form fields
+    setEmail("");
+    setPassword("");
   };
 
   // Return Value
   return (
-    <div className="container-fluid px-0 ">
+    <section className="container-fluid px-0">
       <div className="row justify-content-center align-items-center vh-100">
         <div className="col-6 border border-dark rounded p-5">
-          <h1 className="mb-4">Sign Up Form</h1>
+          <header>
+            <h1 className="mb-4">Sign Up Form</h1>
+          </header>
           <Form onSubmit={formSubmitHandler}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
@@ -69,7 +89,7 @@ const Body = () => {
           </Form>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
