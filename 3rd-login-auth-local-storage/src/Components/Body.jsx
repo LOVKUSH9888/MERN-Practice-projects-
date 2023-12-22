@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { Link } from "react-router-dom";
 
 const Body = () => {
   // Hooks
@@ -36,14 +37,14 @@ const Body = () => {
       password: password,
     };
 
-    // Update users array with the new user 
+    // Update users array with the new user
     ///we can use push or unshift here but i prefer of using spread operator
     const updatedUsers = [...users, newUser];
 
     // Store the updated users array in local storage
     localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-    alert("Registered Successfully")
+    alert("Registered Successfully");
     // Clear form fields
     setEmail("");
     setPassword("");
@@ -86,6 +87,10 @@ const Body = () => {
             <Button variant="dark" type="submit" className="w-100">
               Submit
             </Button>
+            <div className="text-center align-item-center p-2">
+              {/* Added the link here */}
+              <Link to="/profile">Having a profile click here</Link>
+            </div>
           </Form>
         </div>
       </div>

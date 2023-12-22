@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   // Hooks
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // Defining useNavigate hook to move to the dashboard page
+  const navigate = useNavigate();
 
   // event handlers
   const emailHandler = (e) => setEmail(e.target.value);
@@ -28,6 +32,7 @@ const Navbar = () => {
 
     if (user) {
       alert("Login Successful");
+      return navigate("/dashboard");
     } else {
       alert("Invalid email or password");
     }
