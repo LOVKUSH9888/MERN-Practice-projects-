@@ -5,10 +5,9 @@ const postSchema = new mongoose.Schema({
     imageUrl: String,
     description: String,
     postId: String
-})
+});
 
 const PostModel = mongoose.model('PostModel', postSchema);
 
-
-//named ecports 
+// Named export
 module.exports = PostModel;
