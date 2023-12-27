@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button, Form } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
 const ReadPost = () => {
   const [postData, setPostData] = useState([]);
@@ -11,6 +12,8 @@ const ReadPost = () => {
   const [updateTitle, setUpdateTitle] = useState('');
   const [updateDescription, setUpdateDescription] = useState('');
 
+
+  //READ
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,12 +29,20 @@ const ReadPost = () => {
     fetchData();
   }, []);
 
+  //DELETE
   const handleDelete = async (postId) => {
     try {
       const response = await axios.delete(`http://localhost:8080/api/delete/${postId}`);
       if (response.status === 200) {
         // After successful deletion, update the state to remove the deleted post
         setPostData(postData.filter(post => post._id !== postId));
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Item Deleted",
+          showConfirmButton: false,
+          timer: 1500
+        });
       } else {
         console.error('Error deleting post. Server returned:', response);
       }
@@ -45,6 +56,7 @@ const ReadPost = () => {
     }
   };
 
+  // This all will be for the delete
   const handleShowUpdateModal = (postId, title, description) => {
     setUpdatePostId(postId);
     setUpdateTitle(title);
@@ -65,23 +77,31 @@ const ReadPost = () => {
         title: updateTitle,
         description: updateDescription,
       });
-
+  
       if (response.status === 200) {
         // Update the state with the updated post
         setPostData(postData.map(post => (post._id === updatePostId ? response.data.data : post)));
         handleCloseUpdateModal();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Item Updated",
+          showConfirmButton: false,
+          timer: 1500
+        });
       } else {
         console.error('Error updating post. Server returned:', response);
       }
     } catch (error) {
       console.error('Error updating post:', error);
-
+  
       // Log the specific error message from the server, if available
       if (error.response && error.response.data) {
         console.error('Server error message:', error.response.data);
       }
     }
   };
+  
 
   return (
     <div className="container">

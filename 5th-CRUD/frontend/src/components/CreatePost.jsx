@@ -1,6 +1,7 @@
 // CreatePost.js
 import React, { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const CreatePost = ({ refreshPosts }) => {
   const [title, setTitle] = useState("");
@@ -20,6 +21,13 @@ const CreatePost = ({ refreshPosts }) => {
 
       // Handle success, e.g., show a success message
       console.log("Post created successfully:", response.data);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
 
       // Clear input fields after successful creation
       setTitle("");
