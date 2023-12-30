@@ -1,26 +1,29 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
-import { decrement, increment } from "./store/counterSlice";
+import { decrement, increment, setToZero } from "./store/counterSlice";
 
 function App() {
   // Hooks
-  const count = useSelector((state)=> {
+  const count = useSelector((state) => {
     return state.counter.value;
-  })
+  });
 
   const dispatch = useDispatch();
 
   //Function
-  const plusCounter = ()=> {
+  const plusCounter = () => {
     // console.log("plusCounter");
-    dispatch(increment())
-  }
+    dispatch(increment());
+  };
 
-  const minusCounter = ()=> {
+  const minusCounter = () => {
     // console.log("minus");
-    dispatch(decrement())
-  }
+    dispatch(decrement());
+  };
 
+  const setToZeroCounter =() => {
+    dispatch(setToZero());
+  }
 
   //Return
   return (
@@ -29,9 +32,16 @@ function App() {
         <div className="row d-flex justify-content-center text-center ">
           <div className="col ">
             <h1>Counter Web App</h1>
-            <h2 className="color danger">COUNTER : {count}</h2>
-            <button className="btn btn-success mx-2" onClick={plusCounter}>Increment</button>
-            <button className="btn btn-danger" onClick={minusCounter}>Decrement</button>
+            <h2 className="text-primary">COUNTER : {count}</h2>
+            <button className="btn btn-success mx-2" onClick={plusCounter}>
+              Increment
+            </button>
+            <button className="btn btn-danger mx-2" onClick={minusCounter}>
+              Decrement
+            </button>
+            <button className="btn btn-primary" onClick={setToZeroCounter}>
+              Decrement
+            </button>
           </div>
         </div>
       </div>
