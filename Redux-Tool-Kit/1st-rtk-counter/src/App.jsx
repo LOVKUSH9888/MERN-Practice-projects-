@@ -21,9 +21,9 @@ function App() {
     dispatch(decrement());
   };
 
-  const setToZeroCounter =() => {
+  const setToZeroCounter = () => {
     dispatch(setToZero());
-  }
+  };
 
   //Return
   return (
@@ -40,7 +40,7 @@ function App() {
               Decrement
             </button>
             <button className="btn btn-primary" onClick={setToZeroCounter}>
-              Decrement
+              setToZero
             </button>
           </div>
         </div>

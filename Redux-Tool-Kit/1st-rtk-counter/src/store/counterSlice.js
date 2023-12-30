@@ -17,7 +17,7 @@ const counterSlice = createSlice({
     },
     setToZero: (state) => {
       state.value = 0;
-    }
+    },
   },
 });
 
@@ -25,5 +25,3 @@ const counterSlice = createSlice({
 export const { increment, decrement, setToZero } = counterSlice.actions;
 
 export const counterReducer = counterSlice.reducer;
-
-
