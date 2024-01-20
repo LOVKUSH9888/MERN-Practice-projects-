@@ -1,8 +1,8 @@
-// ReadPost.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import './ReadPost.css'; 
 
 const ReadPost = () => {
   const [postData, setPostData] = useState([]);
@@ -11,9 +11,8 @@ const ReadPost = () => {
   const [updatePostId, setUpdatePostId] = useState(null);
   const [updateTitle, setUpdateTitle] = useState('');
   const [updateDescription, setUpdateDescription] = useState('');
+  const [expandedCards, setExpandedCards] = useState([]);
 
-
-  //READ
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,34 +28,29 @@ const ReadPost = () => {
     fetchData();
   }, []);
 
-  //DELETE
   const handleDelete = async (postId) => {
     try {
       const response = await axios.delete(`http://localhost:8080/api/delete/${postId}`);
       if (response.status === 200) {
-        // After successful deletion, update the state to remove the deleted post
-        setPostData(postData.filter(post => post._id !== postId));
+        setPostData(postData.filter((post) => post._id !== postId));
         Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Item Deleted",
+          position: 'top-end',
+          icon: 'success',
+          title: 'Item Deleted',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
       } else {
         console.error('Error deleting post. Server returned:', response);
       }
     } catch (error) {
       console.error('Error deleting post:', error);
-
-      // Log the specific error message from the server, if available
       if (error.response && error.response.data) {
         console.error('Server error message:', error.response.data);
       }
     }
   };
 
-  // This all will be for the delete
   const handleShowUpdateModal = (postId, title, description) => {
     setUpdatePostId(postId);
     setUpdateTitle(title);
@@ -77,31 +71,37 @@ const ReadPost = () => {
         title: updateTitle,
         description: updateDescription,
       });
-  
+
       if (response.status === 200) {
-        // Update the state with the updated post
-        setPostData(postData.map(post => (post._id === updatePostId ? response.data.data : post)));
+        setPostData(
+          postData.map((post) => (post._id === updatePostId ? response.data.data : post))
+        );
         handleCloseUpdateModal();
         Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Item Updated",
+          position: 'top-end',
+          icon: 'success',
+          title: 'Item Updated',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
       } else {
         console.error('Error updating post. Server returned:', response);
       }
     } catch (error) {
       console.error('Error updating post:', error);
-  
-      // Log the specific error message from the server, if available
       if (error.response && error.response.data) {
         console.error('Server error message:', error.response.data);
       }
     }
   };
-  
+
+  const toggleCardExpansion = (postId) => {
+    setExpandedCards((prevExpandedCards) =>
+      prevExpandedCards.includes(postId)
+        ? prevExpandedCards.filter((id) => id !== postId)
+        : [...prevExpandedCards, postId]
+    );
+  };
 
   return (
     <div className="container">
@@ -111,22 +111,33 @@ const ReadPost = () => {
         <p>Loading...</p>
       ) : (
         <div className="row">
-          {postData.map(post => (
+          {postData.map((post) => (
             <div key={post._id} className="col-md-4">
-              <div className="card mb-4">
+              <div className="card mb-4 custom-card">
                 <img src={post.imageUrl} className="card-img-top" alt="Post" />
                 <div className="card-body">
                   <h5 className="card-title">{post.title}</h5>
-                  <p className="card-text">{post.description}</p>
                   <p className="card-text">
-                    <strong>Post ID:</strong> {post._id}
+                    {expandedCards.includes(post._id)
+                      ? post.description
+                      : post.description.substring(0, 100) + '...'}
                   </p>
-                  <button onClick={() => handleDelete(post._id)} className="btn btn-danger">
+                  {post.description.length > 100 && (
+                    <div className="text-center">
+                      <Button
+                        onClick={() => toggleCardExpansion(post._id)}
+                        variant={expandedCards.includes(post._id) ? 'secondary' : 'primary'}
+                      >
+                        {expandedCards.includes(post._id) ? 'Read less' : 'Read more'}
+                      </Button>
+                    </div>
+                  )}
+                  <button onClick={() => handleDelete(post._id)} className="btn btn-danger mt-3 mx-3">
                     Delete
                   </button>
                   <button
                     onClick={() => handleShowUpdateModal(post._id, post.title, post.description)}
-                    className="btn btn-primary"
+                    className="btn btn-primary mt-3 mx-3"
                   >
                     Update
                   </button>
@@ -137,7 +148,6 @@ const ReadPost = () => {
         </div>
       )}
 
-      {/* Update Modal */}
       <Modal show={showUpdateModal} onHide={handleCloseUpdateModal}>
         <Modal.Header closeButton>
           <Modal.Title>Update Post</Modal.Title>

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import "./CreatePost.css"
 
 const CreatePost = ({ refreshPosts }) => {
   const [title, setTitle] = useState("");
@@ -26,7 +27,7 @@ const CreatePost = ({ refreshPosts }) => {
         icon: "success",
         title: "Your work has been saved",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
 
       // Clear input fields after successful creation
@@ -45,6 +46,16 @@ const CreatePost = ({ refreshPosts }) => {
   return (
     <div className="container">
       <div className="row">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="http://localhost:3000/">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Create Post
+            </li>
+          </ol>
+        </nav>
         <div className="col">
           <div>
             <h2>Create a New Post</h2>
@@ -78,13 +89,14 @@ const CreatePost = ({ refreshPosts }) => {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
-              <button
+              <div className="lovebtn"><button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-primary my-4 text-center "
                 onClick={handleCreatePost}
               >
                 Create Post
-              </button>
+              </button></div>
+              
             </form>
           </div>
         </div>
