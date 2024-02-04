@@ -28,15 +28,13 @@ const Blog = mongoose.model("Blog", blogSchema);
 
 // Get all blogs
 app.get("/api/blogs", async (req, res) => {
-    try {
-      const blogs = await Blog.find() || [];
-      res.json(Array.isArray(blogs) ? blogs : []);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-  
-  
+  try {
+    const blogs = (await Blog.find()) || [];
+    res.json(Array.isArray(blogs) ? blogs : []);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Create a new blog
 app.post("/api/blogs", async (req, res) => {
@@ -67,31 +65,29 @@ app.post("/api/blogs/:id/like", async (req, res) => {
 
 // Comment on a blog
 app.post("/api/blogs/:id/comment", async (req, res) => {
-    const blogId = req.params.id;
-    const { user, text } = req.body;
-  
-    try {
-      const blog = await Blog.findById(blogId);
-  
-      if (!blog) {
-        return res.status(404).json({ error: "Blog not found." });
-      }
-  
-      // Update comments for the specific blog
-      blog.comments.push({ user, text });
-      await blog.save();
-  
-      // Retrieve the updated blog with populated comments
-      const updatedBlog = await Blog.findById(blogId);
-  
-      // Send only the comments array in the response
-      res.json({ comments: updatedBlog.comments });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  const blogId = req.params.id;
+  const { user, text } = req.body;
+
+  try {
+    const blog = await Blog.findById(blogId);
+
+    if (!blog) {
+      return res.status(404).json({ error: "Blog not found." });
     }
-  });
-  
-  
+
+    // Update comments for the specific blog
+    blog.comments.push({ user, text });
+    await blog.save();
+
+    // Retrieve the updated blog with populated comments
+    const updatedBlog = await Blog.findById(blogId);
+
+    // Send only the comments array in the response
+    res.json({ comments: updatedBlog.comments });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
