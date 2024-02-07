@@ -1,11 +1,17 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require("express");
+const router = require("./routes/route");
+const app = express();
+const bodyParser = require('body-parser')
+require("dotenv").config();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+//Middlewares
+app.use(bodyParser.json())
+//Routes
+app.use("/api", router);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+//PORT area
+const PORT = process.env.PORT;
+
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`);
+});
