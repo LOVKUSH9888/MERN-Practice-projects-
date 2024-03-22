@@ -1,0 +1,12 @@
+/* NavBar.module.css */
+
+.inner a {
+    margin-right: 10px; /* Adjust the value according to your preference */
+    color: white; /* Adding a color for the links */
+    text-decoration: none; /* Removing the default underline */
+  }
+  
+  .inner a:hover {
+    text-decoration: underline; /* Underline the link on hover */
+  }
+  

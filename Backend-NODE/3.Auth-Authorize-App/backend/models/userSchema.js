@@ -26,14 +26,14 @@ const userSchema = new mongoose.Schema(
       default: "subscriber",
     },
     resetPasswordLink: {
-      data: String,
+      type: String,
       default: "",
     },
   },
   { timestamps: true }
 );
 
-//Virtuals
+// Virtuals
 userSchema
   .virtual("password")
   .set(function (password) {
@@ -45,7 +45,7 @@ userSchema
     return this._password;
   });
 
-//Methods
+// Methods
 userSchema.methods = {
   authenticate: async function (plainText) {
     try {
@@ -56,8 +56,13 @@ userSchema.methods = {
   },
 
   encryptPassword: function (password) {
-    if (!password) return "";
-    return bcrypt.hashSync(password, this.salt);
+    try {
+      if (!password) return "";
+      return bcrypt.hashSync(password, this.salt);
+    } catch (err) {
+      console.error("Encryption error:", err);
+      return "";
+    }
   },
 
   makeSalt: function () {
