@@ -1,23 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
-import "./App.css";
-import { decrement, increment, setToZero } from "./store/counterSlice";
+import { decrement, increment, setToZero } from "./redux/counterSlice";
 
 function App() {
-  // Hooks
-  const count = useSelector((state) => {
-    return state.counter.value;
-  });
-
+  const count = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
 
-  //Function
   const plusCounter = () => {
-    // console.log("plusCounter");
-    dispatch(increment());
+    const incrementBy = parseInt(prompt("Enter the value to increment by:")); // Prompt the user to enter the value
+    if (!isNaN(incrementBy)) { // Check if the input is a valid number
+      dispatch(increment(incrementBy)); // Dispatch the increment action with the entered value
+    } else {
+      alert("Please enter a valid number."); // Alert the user if the input is invalid
+    }
   };
 
   const minusCounter = () => {
-    // console.log("minus");
     dispatch(decrement());
   };
 
@@ -25,7 +22,6 @@ function App() {
     dispatch(setToZero());
   };
 
-  //Return
   return (
     <>
       <div className="container border mt-5 p-3">

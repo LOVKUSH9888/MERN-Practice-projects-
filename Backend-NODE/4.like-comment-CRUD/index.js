@@ -6,8 +6,6 @@ const { connectToDatabase } = require("./database/connection/connectToDatabase")
 
 connectToDatabase();
 
-
-
 const app = express();
 app.use(bodyParser.json());
 
