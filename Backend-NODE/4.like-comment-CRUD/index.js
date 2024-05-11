@@ -1,8 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const { getBlog } = require("./middleware");
-const { connectToDatabase } = require("./database/connection/connectToDatabase");
+const {getBlog} = require("./middleware");
+const {connectToDatabase} = require("./database/connection/connectToDatabase");
 
 connectToDatabase();
 
